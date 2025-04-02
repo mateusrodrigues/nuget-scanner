@@ -33,12 +33,14 @@ public class Project
             .GetResult();
     }
 
-    public async Task CheckForUpdates(CancellationToken cancellationToken = default)
+    public async Task CheckForUpdates(bool includePrerelease = false, CancellationToken cancellationToken = default)
     {
         var tasks = new List<Task<PackageDetails?>>();
-        foreach (var (packageId, _) in _currentPackages)
+        foreach (var (packageId, packageVersion) in _currentPackages)
         {
-            tasks.Add(GetLatestAvailablePackageVersion(packageId, cancellationToken: cancellationToken));
+            var isPrerelease = packageVersion.IsPrerelease || includePrerelease;
+            tasks.Add(GetLatestAvailablePackageVersion(packageId, includePrerelease: isPrerelease,
+                cancellationToken: cancellationToken));
         }
 
         await Task.WhenAll(tasks);
