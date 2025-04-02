@@ -1,0 +1,6 @@
+v1.0.0
+
+* First release of the tool
+* Includes --project flag to manually point to project file or solution.
+* Includes --include-prerelease flag to enable checking for pre-release NuGet
+  package versions.
