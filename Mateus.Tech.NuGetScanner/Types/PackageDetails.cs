@@ -1,6 +1,6 @@
 using NuGet.Versioning;
 
-namespace NuGetScanner.Console.Types;
+namespace Mateus.Tech.NuGetScanner.Types;
 
 public class PackageDetails
 {

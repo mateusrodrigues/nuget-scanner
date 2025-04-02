@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using NuGet.Versioning;
 
-namespace NuGetScanner.Console.Converters;
+namespace Mateus.Tech.NuGetScanner.Converters;
 
 public class NuGetVersionConverter : JsonConverter<NuGetVersion>
 {

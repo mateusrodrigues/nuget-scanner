@@ -4,9 +4,9 @@ using NuGet.Common;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
-using NuGetScanner.Console.Types;
+using Mateus.Tech.NuGetScanner.Types;
 
-namespace NuGetScanner.Console;
+namespace Mateus.Tech.NuGetScanner;
 
 public class Project
 {

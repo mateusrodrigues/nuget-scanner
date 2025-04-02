@@ -1,7 +1,7 @@
 ﻿using System.CommandLine;
 using Spectre.Console;
 
-namespace NuGetScanner.Console;
+namespace Mateus.Tech.NuGetScanner;
 
 public class Program
 {
@@ -52,9 +52,8 @@ public class Program
             }
             catch (Exception e)
             {
-                await System.Console.Error.WriteLineAsync($"ERROR: {e.Message}");
+                await Console.Error.WriteLineAsync($"ERROR: {e.Message}");
                 success = false;
-                throw;
             }
         }, projectOption, includePrereleaseOption);
 

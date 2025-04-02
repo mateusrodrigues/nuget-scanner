@@ -1,8 +1,8 @@
 using System.Collections.ObjectModel;
 using Microsoft.Build.Construction;
-using NuGetScanner.Console.Exceptions;
+using Mateus.Tech.NuGetScanner.Exceptions;
 
-namespace NuGetScanner.Console;
+namespace Mateus.Tech.NuGetScanner;
 
 public class Scanner
 {
