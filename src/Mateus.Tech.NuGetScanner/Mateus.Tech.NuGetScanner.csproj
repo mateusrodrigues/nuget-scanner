@@ -30,7 +30,7 @@
   </Target>
 
   <UsingTask TaskName="Build.Tasks.ReleaseNotesTask" 
-             AssemblyFile="$(MSBuildProjectDirectory)/../Build.Tasks/bin/$(Configuration)/net8.0/Build.Tasks.dll" />
+             AssemblyFile="$(MSBuildProjectDirectory)/../Build.Tasks/bin/$(Configuration)/$(TargetFramework)/Build.Tasks.dll" />
 
   <Target Name="ExtractReleaseNotes" BeforeTargets="GenerateNuspec">
     <ReleaseNotesTask
