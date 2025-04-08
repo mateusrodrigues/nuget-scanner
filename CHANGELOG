@@ -1,3 +1,10 @@
+v1.0.1
+
+* Target net8.0 and allow major runtime roll-forward by default.
+* Create internal MSBuild task to extract the current version release notes
+  from the CHANGELOG file.
+* Ship CHANGELOG file with the tool NuGet package.
+
 v1.0.0
 
 * First release of the tool

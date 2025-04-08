@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <VersionPrefix>1.0.1</VersionPrefix>
+
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>nuget-scanner</ToolCommandName>
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageDescription>A .NET tool that scans all NuGet packages in project files and reports available updates.</PackageDescription>
+    <PackageProjectUrl>https://github.com/mateusrodrigues/nuget-scanner</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mateusrodrigues/nuget-scanner</RepositoryUrl>
+    <PackageTags>dotnet;nuget;package-management;updates;dependency-check;versioning;automation;cli-tool</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Copyright>Copyright $([System.DateTime]::Now.Year) Mateus Rodrigues de Morais</Copyright>
+  </PropertyGroup>
+  
+  <Target Name="BuildTasks" BeforeTargets="ExtractReleaseNotes">
+    <MSBuild Projects="$(MSBuildProjectDirectory)/../Build.Tasks/Build.Tasks.csproj"
+             Targets="Restore;Build"
+             Properties="Configuration=$(Configuration)"
+             Condition="'$(NoBuild)' == ''" />
+  </Target>
+
+  <UsingTask TaskName="Build.Tasks.ReleaseNotesTask" 
+             AssemblyFile="$(MSBuildProjectDirectory)/../Build.Tasks/bin/$(Configuration)/$(TargetFramework)/Build.Tasks.dll" />
+
+  <Target Name="ExtractReleaseNotes" BeforeTargets="GenerateNuspec">
+    <ReleaseNotesTask
+      ChangelogFile="$(MSBuildProjectDirectory)/../../CHANGELOG"
+      VersionPrefix="$(VersionPrefix)"
+      OutputFile="$(IntermediateOutputPath)ReleaseNotes.txt" />
+
+    <PropertyGroup>
+      <PackageReleaseNotes>$([System.IO.File]::ReadAllText('$(IntermediateOutputPath)ReleaseNotes.txt'))</PackageReleaseNotes>
+    </PropertyGroup>
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build" Version="17.8.3" />
+    <PackageReference Include="NuGet.Protocol" Version="6.13.2" />
+    <PackageReference Include="NuGet.Versioning" Version="6.13.2" />
+    <PackageReference Include="Spectre.Console" Version="0.49.1" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../LICENSE" Pack="true" PackagePath=""/>
+    <None Include="../../README.md" Pack="true" PackagePath=""/>
+    <None Include="../../CHANGELOG" pack="true" PackagePath=""/>
+  </ItemGroup>
+
+</Project>
