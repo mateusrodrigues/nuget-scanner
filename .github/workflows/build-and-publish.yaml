@@ -31,7 +31,9 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Pack
-        run: dotnet pack --configuration Release --no-build --output nupkg
+        run: |
+          dotnet pack --configuration Release --no-build --output nupkg \
+            src/Mateus.Tech.NuGetScanner/Mateus.Tech.NuGetScanner.csproj
 
       - name: Upload NuGet package as artifact
         uses: actions/upload-artifact@v4
