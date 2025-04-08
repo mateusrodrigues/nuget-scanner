@@ -5,7 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionPrefix>1.0.1</VersionPrefix>
 
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>nuget-scanner</ToolCommandName>
@@ -18,10 +18,29 @@
     <PackageProjectUrl>https://github.com/mateusrodrigues/nuget-scanner</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mateusrodrigues/nuget-scanner</RepositoryUrl>
     <PackageTags>dotnet;nuget;package-management;updates;dependency-check;versioning;automation;cli-tool</PackageTags>
-    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../CHANGELOG"))</PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Copyright>Copyright $([System.DateTime]::Now.Year) Mateus Rodrigues de Morais</Copyright>
   </PropertyGroup>
+  
+  <Target Name="BuildTasks" BeforeTargets="ExtractReleaseNotes">
+    <MSBuild Projects="$(MSBuildProjectDirectory)/../Build.Tasks/Build.Tasks.csproj"
+             Targets="Restore;Build"
+             Properties="Configuration=$(Configuration)" />
+  </Target>
+
+  <UsingTask TaskName="Build.Tasks.ReleaseNotesTask" 
+             AssemblyFile="$(MSBuildProjectDirectory)/../Build.Tasks/bin/$(Configuration)/net8.0/Build.Tasks.dll" />
+
+  <Target Name="ExtractReleaseNotes" BeforeTargets="GenerateNuspec">
+    <ReleaseNotesTask
+      ChangelogFile="$(MSBuildProjectDirectory)/../../CHANGELOG"
+      VersionPrefix="$(VersionPrefix)"
+      OutputFile="$(IntermediateOutputPath)ReleaseNotes.txt" />
+
+    <PropertyGroup>
+      <PackageReleaseNotes>$([System.IO.File]::ReadAllText('$(IntermediateOutputPath)ReleaseNotes.txt'))</PackageReleaseNotes>
+    </PropertyGroup>
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Build" Version="17.8.3" />
@@ -32,8 +51,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../LICENSE" Pack="true" PackagePath=""/>
-    <None Include="../README.md" Pack="true" PackagePath=""/>
+    <None Include="../../LICENSE" Pack="true" PackagePath=""/>
+    <None Include="../../README.md" Pack="true" PackagePath=""/>
+    <None Include="../../CHANGELOG" pack="true" PackagePath=""/>
   </ItemGroup>
 
 </Project>
