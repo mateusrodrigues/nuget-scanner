@@ -25,7 +25,8 @@
   <Target Name="BuildTasks" BeforeTargets="ExtractReleaseNotes">
     <MSBuild Projects="$(MSBuildProjectDirectory)/../Build.Tasks/Build.Tasks.csproj"
              Targets="Restore;Build"
-             Properties="Configuration=$(Configuration)" />
+             Properties="Configuration=$(Configuration)"
+             Condition="'$(NoBuild)' == ''" />
   </Target>
 
   <UsingTask TaskName="Build.Tasks.ReleaseNotesTask" 
